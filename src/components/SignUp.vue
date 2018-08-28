@@ -21,9 +21,33 @@
     },
     methods: {
       signUp: function() {
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-          (user) => {
-            this.$router.replace('hello')
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
+            //Email verification
+            user.sendEmailVerification().then(function() {
+                  // Email sent.
+                  //Save user in database
+                  firebase.database().ref('users/'+user.uid).set({
+                        email: user.email,
+                  }).catch(function(error){
+                        console.log(error);
+                        alert("Error");
+                  });
+
+                  firebase.auth().signOut().then(function() {
+                      //sign user out
+                      alert("Please check your inbox and verify your email");
+                  }).catch(function(error) {
+                    alert("Oops. " + err.message)
+                      console.log(error);
+                  });
+
+            }).catch(function(error) {
+                  // An error happened.
+                  console.log(error);
+            });
+
+            //this.$router.replace('hello')
+
           },
           (err) => {
             alert('Oops. ' + err.message)
