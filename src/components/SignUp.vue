@@ -37,7 +37,7 @@
                       //sign user out
                       alert("Please check your inbox and verify your email");
                   }).catch(function(error) {
-                    alert("Oops. " + err.message)
+                      alert("Oops. " + err.message)
                       console.log(error);
                   });
 
