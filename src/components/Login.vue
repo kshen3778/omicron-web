@@ -23,7 +23,18 @@
       signIn: function() {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
-            this.$router.replace('hello')
+            //only sign them in if email is verified
+            if(user.emailVerified){
+              this.$router.replace('hello')
+            }else{
+              firebase.auth().signOut().then(function() {
+                  //sign user out
+                  alert('Please verify your email first.');
+              }).catch(function(error) {
+                alert("Oops. " + err.message)
+                  console.log(error);
+              });
+            }
           },
           (err) => {
             alert('Oops. ' + err.message)
