@@ -5,6 +5,7 @@
     <input type="password" v-model="password" placeholder="Password"><br>
     <button v-on:click="signIn">Connection</button>
     <p>You don't have an account ? You can <router-link to="/sign-up">create one</router-link></p>
+    <p>Forgot your password ? You can <router-link to="/forgot-password">reset it</router-link></p>
   </div>
 </template>
 
@@ -41,6 +42,7 @@
           }
         );
       }
+
     }
   }
 </script>
