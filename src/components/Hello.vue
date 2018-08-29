@@ -8,17 +8,32 @@
     </ul>
     <button v-on:click="logout">Logout</button>
 
+    <div v-for="(value, key) in products">
+          <div v-if="value" class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{value.name}}</h5>
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <a :href="value.link" target="_blank" class="card-link">Go somewhere</a>
+            </div>
+          </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import firebase from 'firebase';
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
   name: 'hello',
   data () {
+
+    this.getAllProducts();
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Send Feedback to Companies for Points',
+      products: null
     }
   },
   methods: {
@@ -26,6 +41,12 @@ export default {
       firebase.auth().signOut().then(() => {
         this.$router.replace('login')
       })
+    },
+    getAllProducts: function() {
+      var obj = this;
+      firebase.database().ref('products').once('value').then(function(snapshot) {
+        obj.products = snapshot.val();
+      });
     }
   }
 }

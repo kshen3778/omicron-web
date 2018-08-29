@@ -1,24 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import BootstrapVue from 'bootstrap-vue'
 
 import Hello from '@/components/Hello'
 import Profile from '@/components/Profile'
 import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import ForgotPassword from '@/components/ForgotPassword'
+import Admin from '@/components/Admin'
 import firebase from 'firebase'
 
 Vue.use(Router)
+Vue.use(BootstrapVue);
 
 let router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/hello'
     },
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/hello'
     },
     {
       path: '/login',
@@ -50,6 +53,11 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
     }
   ]
 })
@@ -60,7 +68,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !currentUser) next('login')
   else if (currentUser && !currentUser.emailVerified) next('login')
-  else if (!requiresAuth && currentUser) next('hello')
+  //else if (!requiresAuth && currentUser) next('hello')
   else next()
 })
 
