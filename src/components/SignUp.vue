@@ -28,6 +28,8 @@
                   //Save user in database
                   firebase.database().ref('users/'+user.uid).set({
                         email: user.email,
+                        points: 0,
+                        admin: false
                   }).catch(function(error){
                         console.log(error);
                         alert("Error");
