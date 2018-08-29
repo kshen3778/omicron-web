@@ -9,12 +9,12 @@ Vue.config.productionTip = false
 
 let app;
 let config = {
-  apiKey: "AIzaSyATpcTwZcBsSG9OcBKgGL1mNvfU0bXu1SI",
-  authDomain: "vue-auth-cd56e.firebaseapp.com",
-  databaseURL: "https://vue-auth-cd56e.firebaseio.com",
-  projectId: "vue-auth-cd56e",
-  storageBucket: "",
-  messagingSenderId: "733126669746"
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAING_SENDER_ID
 };
 
 firebase.initializeApp(config)
