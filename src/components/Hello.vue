@@ -5,8 +5,9 @@
     <h2>Dashboard</h2>
     <ul>
       <li><router-link to="/profile">Profile</router-link></li>
+      <li><router-link to="/rewards">Rewards Marketplace</router-link></li>
     </ul>
-    <button v-on:click="logout">Logout</button>
+    <button class="btn btn-primary" v-on:click="logout">Logout</button>
 
     <div v-for="(value, key) in products">
           <div v-if="value" class="card" style="width: 18rem;">
@@ -32,7 +33,7 @@ export default {
 
     this.getAllProducts();
     return {
-      msg: 'Send Feedback to Companies for Points',
+      msg: 'Send Feedback to Companies and Get Rewarded',
       products: null
     }
   },

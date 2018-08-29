@@ -7,8 +7,28 @@
     <button v-on:click="signIn">Log In</button>
   </div>
 
-  <div class="admin" v-else-if="logged_in && user_data.admin">
+  <div class="admin" v-else-if="logged_in && user_data.admin && view=='products'">
     <h1> Admin Dashboard </h1>
+    <button class="btn btn-primary" v-on:click="switchView('rewards')">View Items</button>
+    <button class="btn btn-primary" v-on:click="switchView('requests')">View Requests</button>
+    <br>
+    <h2> Products </h2>
+  </div>
+
+  <div class="admin" v-else-if="logged_in && user_data.admin && view=='rewards'">
+    <h1> Admin Dashboard </h1>
+    <button class="btn btn-primary" v-on:click="switchView('products')">View Products</button>
+    <button class="btn btn-primary" v-on:click="switchView('requests')">View Requests</button>
+    <br>
+    <h2> Reward Items </h2>
+  </div>
+
+  <div class="admin" v-else-if="logged_in && user_data.admin && view=='requests'">
+    <h1> Admin Dashboard </h1>
+    <button class="btn btn-primary" v-on:click="switchView('products')">View Products</button>
+    <button class="btn btn-primary" v-on:click="switchView('rewards')">View Items</button>
+    <br>
+    <h2> Requests </h2>
   </div>
 
   <div v-else>
@@ -29,11 +49,15 @@ export default {
       email: "",
       password: "",
       logged_in: false,
-      user_data: null
+      user_data: null,
+      view: "products"
     }
 
   },
   methods: {
+    switchView: function(new_view){
+      this.view = new_view;
+    },
     getUserData: function(){
       var obj = this;
       var userid = firebase.auth().currentUser.uid;

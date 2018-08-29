@@ -8,6 +8,8 @@ import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import ForgotPassword from '@/components/ForgotPassword'
 import Admin from '@/components/Admin'
+import Rewards from '@/components/Rewards'
+
 import firebase from 'firebase'
 
 Vue.use(Router)
@@ -50,6 +52,14 @@ let router = new Router({
       path: '/profile',
       name: 'Profile',
       component: Profile,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/rewards',
+      name: 'Rewards',
+      component: Rewards,
       meta: {
         requiresAuth: true
       }

@@ -3,9 +3,9 @@
     <h1>{{ msg }}</h1>
     <h2> User email: {{user_data.email}}</h2>
     <h2> Points: {{user_data.points}}</h2>
-    <button v-on:click="logout">Logout</button>
-    <button v-on:click="redirectToMain()">Exit</button>
-    <button v-on:click="resetPassword()">Reset Password</button>
+    <button class="btn btn-primary" v-on:click="logout">Logout</button>
+    <button class="btn btn-primary" v-on:click="redirectToMain()">Exit</button>
+    <button class="btn btn-primary" v-on:click="resetPassword()">Reset Password</button>
   </div>
 </template>
 
