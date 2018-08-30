@@ -8,6 +8,9 @@ import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import ForgotPassword from '@/components/ForgotPassword'
 import Admin from '@/components/Admin'
+import ProductView from '@/components/ProductView'
+import RewardView from '@/components/RewardView'
+
 import Rewards from '@/components/Rewards'
 
 import firebase from 'firebase'
@@ -67,7 +70,17 @@ let router = new Router({
     {
       path: '/admin',
       name: 'Admin',
-      component: Admin
+      component: Admin,
+      children: [
+        {
+          path: 'products',
+          component: ProductView
+        },
+        {
+          path: 'rewards',
+          component: RewardView
+        }
+      ]
     }
   ]
 })
