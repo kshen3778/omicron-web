@@ -8,13 +8,14 @@
       <li><router-link to="/rewards">Rewards Marketplace</router-link></li>
     </ul>
     <button class="btn btn-primary" v-on:click="logout">Logout</button>
+    <br>
 
     <div v-for="(value, key) in products">
-          <div v-if="value" class="card" style="width: 18rem;">
+          <div v-if="value" class="card mx-auto" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">{{value.name}}</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a :href="value.link" target="_blank" class="card-link">Go somewhere</a>
+              <p class="card-text">{{value.desc}}</p>
+              <a :href="value.link" target="_blank" class="card-link">Send Feedback</a>
             </div>
           </div>
     </div>

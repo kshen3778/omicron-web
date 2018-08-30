@@ -8,7 +8,7 @@
     </ul>
 
     <div v-for="(value, key) in items">
-          <div v-if="value" class="card" style="width: 18rem;">
+          <div v-if="value" class="card mx-auto" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">{{value.name}}</h5>
               <p class="card-text">{{value.desc}}</p>
