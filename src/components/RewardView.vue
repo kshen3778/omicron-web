@@ -2,10 +2,7 @@
 
 
 
-  <div class="admin" v-if="logged_in && user_data.admin">
-    <h1> Admin Dashboard </h1>
-    <br>
-
+  <div class="admin" v-if="this.$parent.logged_in && this.$parent.user_data.admin">
     <h2> Reward Items </h2>
     <b-card bg-variant="light">
         <b-form-group horizontal breakpoint="lg" label="Create New" label-size="lg" label-class="font-weight-bold pt-0" class="mb-0">
@@ -101,10 +98,6 @@
   </div>
 
 
-  <div v-else>
-    <h1> You will need admin rights to access this page. </h1>
-  </div>
-
 </template>
 
 <script>
@@ -182,30 +175,6 @@ export default {
       firebase.database().ref('users/'+userid).once('value').then(function(snapshot) {
           obj.user_data = snapshot.val();
       });
-    },
-    signIn: function() {
-      var obj = this;
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-        (user) => {
-          //only sign them in if email is verified
-          if(user.emailVerified){
-            obj.logged_in = true;
-            obj.getUserData();
-
-          }else{
-            firebase.auth().signOut().then(function() {
-                //sign user out
-                alert('Please verify your email first.');
-            }).catch(function(error) {
-              alert("Oops. " + err.message)
-                console.log(error);
-            });
-          }
-        },
-        (err) => {
-          alert('Oops. ' + err.message)
-        }
-      );
     }
 
   }

@@ -9,7 +9,11 @@
       </div>
 
       <div v-else>
-        <h1> Logged In </h1>
+        <h1> Admin Dashboard </h1>
+        <router-link to="/admin/products">Products</router-link>
+        <router-link to="/admin/rewards">Rewards</router-link>
+        <router-link to="/admin/requests">Rewards</router-link>
+        <br>
       </div>
 
       <router-view></router-view>
@@ -27,12 +31,12 @@ export default {
   data () {
 
 
-    //this.getUserData(); //REMOVE AFTER TESTS
+    this.getUserData(); //REMOVE AFTER TESTS
 
     return {
       email: "",
       password: "",
-      logged_in: false, //DEFAULT: False
+      logged_in: true, //DEFAULT: False
       user_data: {}
     }
 

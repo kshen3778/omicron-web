@@ -10,7 +10,6 @@ import ForgotPassword from '@/components/ForgotPassword'
 import Admin from '@/components/Admin'
 import ProductView from '@/components/ProductView'
 import RewardView from '@/components/RewardView'
-
 import Rewards from '@/components/Rewards'
 
 import firebase from 'firebase'
