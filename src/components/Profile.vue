@@ -20,7 +20,7 @@ export default {
     this.getUserData();
     return {
       msg: 'Profile',
-      user_data: null
+      user_data: {}
     }
 
   },

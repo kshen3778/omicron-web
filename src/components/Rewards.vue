@@ -50,8 +50,8 @@ export default {
     this.getUserData();
     return {
       msg: 'Rewards Marketplace',
-      items: null,
-      user_data: null
+      items: {},
+      user_data: {}
     }
   },
   methods: {
