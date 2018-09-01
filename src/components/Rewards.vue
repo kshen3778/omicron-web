@@ -98,7 +98,8 @@ export default {
             user_email: obj.user_data.email,
             item_id: key,
             item_name: item.name,
-            completed: false
+            completed: false,
+            date: new Date().toLocaleString()
           });
 
           obj.getAllItems();

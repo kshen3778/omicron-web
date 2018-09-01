@@ -12,7 +12,7 @@
         <h1> Admin Dashboard </h1>
         <router-link to="/admin/products">Products</router-link>
         <router-link to="/admin/rewards">Rewards</router-link>
-        <router-link to="/admin/requests">Rewards</router-link>
+        <router-link to="/admin/requests">Requests</router-link>
         <br>
       </div>
 
