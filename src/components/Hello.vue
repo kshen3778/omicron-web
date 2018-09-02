@@ -9,15 +9,19 @@
     </ul>
     <button class="btn btn-primary" v-on:click="logout">Logout</button>
     <br>
+    <br>
 
-    <div v-for="(value, key) in products">
-          <div v-if="value" class="card mx-auto" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title">{{value.name}}</h5>
-              <p class="card-text">{{value.desc}}</p>
-              <a :href="value.link" target="_blank" class="card-link">Send Feedback</a>
+    <div v-for="products in groupedProducts" class="row">
+      <div v-for="value in products" class="col-lg-4">
+            <div v-if="value" class="card mx-auto">
+              <div class="card-body">
+                <h5 class="card-title">{{value[1].name}}</h5>
+                <p class="card-text">{{value[1].desc}}</p>
+                <a :href="value[1].link" target="_blank" class="card-link">Send Feedback</a>
+              </div>
             </div>
-          </div>
+            <br>
+      </div>
     </div>
 
   </div>
@@ -25,6 +29,7 @@
 
 <script>
 import firebase from 'firebase';
+import _ from 'lodash';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -35,7 +40,21 @@ export default {
     this.getAllProducts();
     return {
       msg: 'Send Feedback to Companies and Get Rewarded',
-      products: null
+      products: {}
+    }
+  },
+  computed: {
+    groupedProducts: function() {
+      var obj = this;
+      var result = Object.keys(obj.products).map(function(key) {
+        return [key, obj.products[key]];
+      });
+
+      console.log(result);
+      var chunked = _.chunk(result, 3);
+      console.log(chunked);
+      return chunked;
+
     }
   },
   methods: {
@@ -48,6 +67,7 @@ export default {
       var obj = this;
       firebase.database().ref('products').once('value').then(function(snapshot) {
         obj.products = snapshot.val();
+        console.log(JSON.stringify(obj.products));
       });
     }
   }

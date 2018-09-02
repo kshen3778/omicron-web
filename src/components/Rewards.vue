@@ -7,29 +7,29 @@
       <p> You have <b> {{user_data.points}}</b> points remaining. </p>
     </ul>
 
-    <div v-for="(value, key) in items">
-          <div v-if="value" class="card mx-auto" style="width: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title">{{value.name}}</h5>
-              <p class="card-text">{{value.desc}}</p>
-              <p class="card-text">Redeem for <b>{{value.cost}}</b> points.</p>
-              <p class="card-text">Amount Left: {{value.amount}}</p>
-              <button type="button" class="btn btn-primary" v-b-modal="''+key">
-                Details
-              </button>
+    <div v-for="items in groupedItems" class="row">
+      <div v-for="value in items" class="col-sm">
+            <div v-if="value" class="card mx-auto" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">{{value[1].name}}</h5>
+                <p class="card-text">{{value[1].desc}}</p>
+                <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
+                <p class="card-text">Amount Left: {{value[1].amount}}</p>
+                <button type="button" class="btn btn-primary" v-b-modal="''+ value[0]">
+                  Details
+                </button>
 
-              <b-modal :id="''+key" :title="value.name">
-                <p class="my-4">{{value.desc}}</p>
-                <p class="card-text">Redeem for <b>{{value.cost}}</b> points.</p>
-                <p class="my-4">Amount Left: {{value.amount}}</p>
-                <div slot="modal-footer">
-                  <button type="button" class="btn btn-primary" v-on:click="redeem(key)">Redeem</button>
-                 </div>
-              </b-modal>
+                <b-modal :id="''+value[0]" :title="value[1].name">
+                  <p class="my-4">{{value[1].desc}}</p>
+                  <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
+                  <p class="my-4">Amount Left: {{value[1].amount}}</p>
+                  <div slot="modal-footer">
+                    <button type="button" class="btn btn-primary" v-on:click="redeem(value[0])">Redeem</button>
+                   </div>
+                </b-modal>
+              </div>
             </div>
-          </div>
-
-
+      </div>
     </div>
 
 
@@ -52,6 +52,20 @@ export default {
       msg: 'Rewards Marketplace',
       items: {},
       user_data: {}
+    }
+  },
+  computed: {
+    groupedItems: function() {
+      var obj = this;
+      var result = Object.keys(obj.items).map(function(key) {
+        return [key, obj.items[key]];
+      });
+
+      console.log(result);
+      var chunked = _.chunk(result, 3);
+      console.log(chunked);
+      return chunked;
+
     }
   },
   methods: {
