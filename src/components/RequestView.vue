@@ -4,6 +4,13 @@
   <div class="admin" v-if="this.$parent.logged_in && this.$parent.user_data.admin">
 
     <h2> Requests </h2>
+    <br>
+
+    <button type="button" class="btn btn-info" v-on:click="getNonProcessedRequests()">Get Non-processed Requests</button>
+    <button type="button" class="btn btn-info" v-on:click="getProcessedRequests()">Get Processed Requests</button>
+    <button type="button" class="btn btn-info" v-on:click="getAllRequests()">View All Requests</button>
+    <br>
+    <br>
 
     <b-list-group>
 
@@ -82,6 +89,22 @@ export default {
 
   },
   methods: {
+
+    getNonProcessedRequests: function() {
+      var obj = this;
+      firebase.database().ref('requests').orderByChild('completed').equalTo(false).on("value", function(snapshot){
+        obj.requests_list = snapshot.val();
+        console.log(obj.requests_list);
+      });
+    },
+
+    getProcessedRequests: function(){
+      var obj = this;
+      firebase.database().ref('requests').orderByChild('completed').equalTo(true).on("value", function(snapshot){
+        obj.requests_list = snapshot.val();
+        console.log(obj.requests_list);
+      });
+    },
 
     getAllRequests: function() {
       var obj = this;

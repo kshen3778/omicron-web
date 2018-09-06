@@ -26,7 +26,8 @@
           (user) => {
             //only sign them in if email is verified
             if(user.emailVerified){
-              this.$router.replace('hello')
+              this.$router.replace('hello');
+              location.reload();
             }else{
               firebase.auth().signOut().then(function() {
                   //sign user out
