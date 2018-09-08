@@ -1,19 +1,15 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1>Dashboard</h1>
 
-    <h2>Dashboard</h2>
-    <ul>
-      <li><router-link to="/profile">Profile</router-link></li>
-      <li><router-link to="/rewards">Rewards Marketplace</router-link></li>
-    </ul>
-    <button class="btn btn-primary" v-on:click="logout">Logout</button>
+
     <br>
     <br>
 
-    <div v-for="products in groupedProducts" class="row">
+    <div v-for="products in groupedProducts" class="row p-5">
       <div v-for="value in products" class="col-lg-4">
             <div v-if="value" class="card mx-auto">
+              <img class="card-img-top" :src="getImage(value[1].imgsrc + '.png')">
               <div class="card-body">
                 <h5 class="card-title">{{value[1].name}}</h5>
                 <p class="card-text">{{value[1].desc}}</p>
@@ -39,7 +35,6 @@ export default {
 
     this.getAllProducts();
     return {
-      msg: 'Send Feedback to Companies and Get Rewarded',
       products: {}
     }
   },
@@ -58,6 +53,10 @@ export default {
     }
   },
   methods: {
+    getImage (img) {
+        var i = require("../assets/"+img);
+        return i;
+    },
     logout: function() {
       firebase.auth().signOut().then(() => {
         this.$router.replace('login')
@@ -92,5 +91,11 @@ li {
 
 a {
   color: #42b983;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 12vw;
+
 }
 </style>

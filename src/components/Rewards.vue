@@ -2,34 +2,39 @@
   <div class="hello">
 
     <h1>Rewards Marketplace</h1>
+    <br>
     <ul>
-      <li><router-link to="/dashboard">Dashboard</router-link></li>
-      <p> You have <b> {{user_data.points}}</b> points remaining. </p>
+      <h3> You have <b> {{user_data.points}}</b> points remaining. </h3>
     </ul>
 
-    <div v-for="items in groupedItems" class="row">
-      <div v-for="value in items" class="col-sm">
-            <div v-if="value" class="card mx-auto" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">{{value[1].name}}</h5>
-                <p class="card-text">{{value[1].desc}}</p>
-                <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
-                <p class="card-text">Amount Left: {{value[1].amount}}</p>
-                <button type="button" class="btn btn-primary" v-b-modal="''+ value[0]">
-                  Details
-                </button>
+    <div v-for="items in groupedItems" class="row p-5">
 
-                <b-modal :id="''+value[0]" :title="value[1].name">
-                  <p class="my-4">{{value[1].desc}}</p>
+        <div v-for="value in items" class="col-lg-4">
+
+              <div v-if="value" class="card mx-auto">
+                <img class="card-img-top" :src="getImage(value[1].imgsrc + '.png')">
+                <div class="card-body">
+                  <h5 class="card-title">{{value[1].name}}</h5>
+                  <p class="card-text">{{value[1].desc}}</p>
                   <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
-                  <p class="my-4">Amount Left: {{value[1].amount}}</p>
-                  <div slot="modal-footer">
-                    <button type="button" class="btn btn-primary" v-on:click="redeem(value[0])">Redeem</button>
-                   </div>
-                </b-modal>
+                  <p class="card-text">Amount Left: {{value[1].amount}}</p>
+                  <button type="button" class="btn btn-primary" v-b-modal="''+ value[0]">
+                    Details
+                  </button>
+
+                  <b-modal :id="''+value[0]" :title="value[1].name">
+                    <p class="my-4">{{value[1].desc}}</p>
+                    <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
+                    <p class="my-4">Amount Left: {{value[1].amount}}</p>
+                    <div slot="modal-footer">
+                      <button type="button" class="btn btn-primary" v-on:click="redeem(value[0])">Redeem</button>
+                     </div>
+                  </b-modal>
+                </div>
               </div>
-            </div>
-      </div>
+
+        </div>
+
     </div>
 
 
@@ -69,6 +74,11 @@ export default {
     }
   },
   methods: {
+    getImage (img) {
+        var i = require("../assets/"+img);
+        return i;
+    },
+
     getAllItems: function() {
       var obj = this;
       firebase.database().ref('rewards').once('value').then(function(snapshot) {
@@ -150,5 +160,11 @@ li {
 
 a {
   color: #42b983;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 12vw;
+
 }
 </style>
