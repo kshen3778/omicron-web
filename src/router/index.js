@@ -12,6 +12,7 @@ import ProductView from '@/components/ProductView'
 import RewardView from '@/components/RewardView'
 import RequestView from '@/components/RequestView'
 import Rewards from '@/components/Rewards'
+import UserView from '@/components/UserView'
 import Header from '@/components/Header'
 
 import firebase from 'firebase'
@@ -84,6 +85,10 @@ let router = new Router({
         {
           path: 'requests',
           component: RequestView
+        },
+        {
+          path: 'users',
+          component: UserView
         }
       ]
     }
