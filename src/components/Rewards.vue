@@ -24,7 +24,7 @@
 
                   <b-modal :id="''+value[0]" :title="value[1].name">
                     <p class="my-4">{{value[1].desc}}</p>
-                    <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
+                    <p class="my-4">Redeem for <b>{{value[1].cost}}</b> points.</p>
                     <p class="my-4">Amount Left: {{value[1].amount}}</p>
                     <div slot="modal-footer">
                       <button type="button" class="btn btn-primary" v-on:click="redeem(value[0])">Redeem</button>
@@ -120,6 +120,7 @@ export default {
           firebase.database().ref('requests/').push({
             user_id: userid,
             user_email: obj.user_data.email,
+            user_address: obj.user_data.address,
             item_id: key,
             item_name: item.name,
             completed: false,

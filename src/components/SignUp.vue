@@ -3,6 +3,8 @@
     <p>Let's create a new account !</p>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" placeholder="Password"><br>
+    <input type="text" v-model="name" placeholder="Full Name"><br>
+    <input type="text" v-model="address" placeholder="Full Mailing Address"><br>
     <button v-on:click="signUp">Sign Up</button>
     <span>or go back to <router-link to="/login">login</router-link>.</span>
   </div>
@@ -16,11 +18,15 @@
     data: function() {
       return {
         email: '',
-        password: ''
+        password: '',
+        name: '',
+        address: ''
       }
     },
     methods: {
       signUp: function() {
+        var name = this.name;
+        var address = this.address;
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
             //Email verification
             user.sendEmailVerification().then(function() {
@@ -28,6 +34,8 @@
                   //Save user in database
                   firebase.database().ref('users/'+user.uid).set({
                         email: user.email,
+                        name: name,
+                        address: address,
                         points: 0,
                         admin: false
                   }).catch(function(error){

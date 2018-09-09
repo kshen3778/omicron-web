@@ -53,6 +53,11 @@
                                 label-class="text-sm-right">
                     <h5> {{value.item_id}}</h5>
                   </b-form-group>
+                  <b-form-group horizontal
+                                label="Address:"
+                                label-class="text-sm-right">
+                    <h5> {{value.user_address}}</h5>
+                  </b-form-group>
                   <div slot="modal-footer">
                     <button type="button" class="btn btn-success" v-if="!value.completed" v-on:click="changeStatus(key, 'complete')">Mark as Processed</button>
                     <button type="button" class="btn btn-danger" v-if="value.completed" v-on:click="changeStatus(key, 'incomplete')">Change to Unprocessed</button>

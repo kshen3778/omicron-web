@@ -27,6 +27,9 @@
           <br>
           Points: {{value.points}}
           <br>
+          Address: {{value.address}}
+          <br>
+          
           <button type="button" class="btn btn-primary" v-b-modal="''+key">Edit</button>
 
           <b-modal :id="''+key" :title="key">

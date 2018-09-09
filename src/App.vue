@@ -54,6 +54,7 @@
 	font: normal 18px sans-serif;
 	padding: 45px;
 	margin-top: 80px;
+  box-shadow: 0 50vh 0 50vh #292c2f;
 }
 
 .footer-basic-centered .footer-company-motto{
