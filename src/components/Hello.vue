@@ -8,8 +8,8 @@
 
     <div v-for="products in groupedProducts" class="row p-5">
       <div v-for="value in products" class="col-lg-4">
-            <div v-if="value" class="card mx-auto">
-              <img class="card-img-top" :src="getImage(value[1].imgsrc + '.png')">
+            <div v-if="value" class="card mx-auto" :src="value[1].imgurl">
+              <img class="card-img-top" :src="value[1].imgurl">
               <div class="card-body">
                 <h5 class="card-title">{{value[1].name}}</h5>
                 <p class="card-text">{{value[1].desc}}</p>
@@ -31,9 +31,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 export default {
   name: 'hello',
-  data () {
 
+  data () {
     this.getAllProducts();
+
     return {
       products: {}
     }
@@ -53,9 +54,43 @@ export default {
     }
   },
   methods: {
-    getImage (img) {
-        var i = require("../assets/"+img);
-        return i;
+
+    getImages: function (products) {
+      console.log(products);
+      for (var item in products){
+        console.log(products[item].imgsrc);
+        var url = this.getImage(products[item].imgsrc);
+        console.log(url);
+        products[item].imgurl = url;
+      }
+      console.log(products);
+      return products;
+    },
+
+    getImage: function (imgsrc) {
+      var storage = firebase.storage();
+      var pathReference = storage.ref(imgsrc);
+
+      pathReference.getDownloadURL().then(function(url) {
+        var pulledImage = url;
+        return pulledImage
+      });
+
+      //return "https://firebasestorage.googleapis.com/v0/b/vue-auth-cd56e.appspot.com/o/balsamiq.png?alt=media&token=e3c8ee15-ecd6-4186-b408-fc2332b2dedf";
+
+      //console.log(imgsrc);
+      /*pathReference.getDownloadURL().then(function(url) {
+        console.log(url);
+        console.log(typeof url);
+        var imgurl = url;
+        return imgurl;
+
+
+      }).catch(function(error) {
+        // Handle any errors
+        console.log("Image not found: " + imgsrc);
+        console.log(error.code);
+      });*/
     },
     logout: function() {
       firebase.auth().signOut().then(() => {
@@ -67,6 +102,7 @@ export default {
       firebase.database().ref('products').once('value').then(function(snapshot) {
         obj.products = snapshot.val();
         console.log(JSON.stringify(obj.products));
+        //obj.products = obj.getImages(obj.products);
       });
     }
   }
