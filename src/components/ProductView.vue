@@ -22,7 +22,11 @@
                           label-class="text-sm-right">
               <b-form-input v-model="product.link"></b-form-input>
             </b-form-group>
-
+            <b-form-group horizontal
+                          label="Image Url:"
+                          label-class="text-sm-right">
+              <b-form-input v-model="product.imgurl"></b-form-input>
+            </b-form-group>
             <b-form-group horizontal>
               <button class="btn btn-primary" v-on:click="createProduct(product)">Create</button>
             </b-form-group>
@@ -49,6 +53,8 @@
                 <br>
                 {{value.link}}
                 <br>
+                {{value.imgurl}}
+                <br>
                 <button type="button" class="btn btn-primary" v-on:click="test(key)" v-b-modal="''+key">Edit</button>
                 <button type="button" class="btn btn-danger" v-on:click="deleteProduct(key)">Delete</button>
 
@@ -67,6 +73,11 @@
                                 label="Link:"
                                 label-class="text-sm-right">
                     <b-form-input v-model="value.link"></b-form-input>
+                  </b-form-group>
+                  <b-form-group horizontal
+                                label="Image Url:"
+                                label-class="text-sm-right">
+                    <b-form-input v-model="value.imgurl"></b-form-input>
                   </b-form-group>
                   <div slot="modal-footer">
                     <button type="button" class="btn btn-primary" v-on:click="saveChanges(key, value)">Save Changes</button>
@@ -95,7 +106,7 @@ export default {
   data () {
 
     this.getAllProducts();
-    this.getUserData(); //REMOVE AFTER TESTS
+    //this.getUserData(); //REMOVE AFTER TESTS
     return {
       product_msg: "",
       product: {},
@@ -121,6 +132,7 @@ export default {
         name: product.name,
         desc: product.desc,
         link: product.link,
+        imgurl: product.imgurl
       }).catch(function(error) {
           alert("Oops. " + err.message);
           console.log(error);
@@ -134,7 +146,8 @@ export default {
       firebase.database().ref('products/' + key).update({
         name: value.name,
         desc: value.desc,
-        link: value.link
+        link: value.link,
+        imgurl: value.imgurl
       });
       this.getAllProducts();
     },
