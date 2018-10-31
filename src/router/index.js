@@ -14,6 +14,7 @@ import RequestView from '@/components/RequestView'
 import Rewards from '@/components/Rewards'
 import UserView from '@/components/UserView'
 import Header from '@/components/Header'
+import ReviewPage from '@/components/ReviewPage'
 
 import firebase from 'firebase'
 
@@ -34,6 +35,14 @@ let router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/review/:id',
+      name: 'ReviewPage',
+      component: ReviewPage,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/sign-up',

@@ -13,7 +13,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{value[1].name}}</h5>
                 <p class="card-text">{{value[1].desc}}</p>
-                <a :href="value[1].link" target="_blank" class="card-link">Send Feedback</a>
+                <router-link :to="'/review/'+value[1].id">Send Feedback</router-link>
               </div>
             </div>
             <br>
