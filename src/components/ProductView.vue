@@ -18,9 +18,14 @@
               <b-form-input v-model="product.desc"></b-form-input>
             </b-form-group>
             <b-form-group horizontal
-                          label="Link:"
+                          label="Form Link:"
                           label-class="text-sm-right">
               <b-form-input v-model="product.link"></b-form-input>
+            </b-form-group>
+            <b-form-group horizontal
+                          label="Sub-URL id:"
+                          label-class="text-sm-right">
+              <b-form-input v-model="product.id"></b-form-input>
             </b-form-group>
             <b-form-group horizontal
                           label="Image Url:"
@@ -33,7 +38,6 @@
 
         </b-form-group>
 
-        <h3> {{product_msg}} </h3>
     </b-card>
 
     <br>
@@ -53,6 +57,8 @@
                 <br>
                 {{value.link}}
                 <br>
+                {{value.id}}
+                <br>
                 {{value.imgurl}}
                 <br>
                 <button type="button" class="btn btn-primary" v-on:click="test(key)" v-b-modal="''+key">Edit</button>
@@ -70,9 +76,14 @@
                     <b-form-input v-model="value.desc"></b-form-input>
                   </b-form-group>
                   <b-form-group horizontal
-                                label="Link:"
+                                label="Form Link:"
                                 label-class="text-sm-right">
                     <b-form-input v-model="value.link"></b-form-input>
+                  </b-form-group>
+                  <b-form-group horizontal
+                                label="Sub-URL id:"
+                                label-class="text-sm-right">
+                    <b-form-input v-model="value.id"></b-form-input>
                   </b-form-group>
                   <b-form-group horizontal
                                 label="Image Url:"
@@ -132,6 +143,7 @@ export default {
         name: product.name,
         desc: product.desc,
         link: product.link,
+        id: product.id,
         imgurl: product.imgurl
       }).catch(function(error) {
           alert("Oops. " + err.message);
@@ -147,6 +159,7 @@ export default {
         name: value.name,
         desc: value.desc,
         link: value.link,
+        id: value.id,
         imgurl: value.imgurl
       });
       this.getAllProducts();
