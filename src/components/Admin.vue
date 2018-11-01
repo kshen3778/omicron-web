@@ -31,12 +31,12 @@ export default {
   data () {
 
 
-    this.getUserData(); //REMOVE AFTER TESTS
+    //this.getUserData(); //REMOVE AFTER TESTS
 
     return {
       email: "",
       password: "",
-      logged_in: true, //DEFAULT: False
+      logged_in: false, //DEFAULT: False
       user_data: {}
     }
 
