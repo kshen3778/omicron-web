@@ -22,7 +22,11 @@
                           label-class="text-sm-right">
               <b-form-input v-model="item.amount" type="number"></b-form-input>
             </b-form-group>
-
+            <b-form-group horizontal
+                          label="Image URL:"
+                          label-class="text-sm-right">
+              <b-form-input v-model="item.imgurl"></b-form-input>
+            </b-form-group>
             <b-form-group horizontal
                           label="Cost:"
                           label-class="text-sm-right">
@@ -53,6 +57,8 @@
                 <br>
                 {{value2.desc}}
                 <br>
+                {{value2.imgurl}}
+                <br>
                 Amount Remaining: {{value2.amount}}
                 <br>
                 Cost in Points: {{value2.cost}}
@@ -77,7 +83,11 @@
                                 label-class="text-sm-right">
                     <b-form-input v-model="value2.amount" type="number"></b-form-input>
                   </b-form-group>
-
+                  <b-form-group horizontal
+                                label="Image URL:"
+                                label-class="text-sm-right">
+                    <b-form-input v-model="value2.imgurl"></b-form-input>
+                  </b-form-group>
                   <b-form-group horizontal
                                 label="Cost:"
                                 label-class="text-sm-right">
@@ -108,13 +118,13 @@ export default {
   name: 'rewardview',
   data () {
 
-    this.getUserData(); //REMOVE AFTER TESTS
+    //this.getUserData(); //REMOVE AFTER TESTS
     this.getAllItems();
     return {
       rewardItem_msg: "",
       email: "",
       password: "",
-      logged_in: true, //DEFAULT: False
+      //logged_in: true, //DEFAULT: False
       user_data: {},
       item: {},
       rewards_list: {}
@@ -139,6 +149,7 @@ export default {
         name: item.name,
         desc: item.desc,
         amount: item.amount,
+        imgurl: item.imgurl,
         cost: item.cost
       }).catch(function(error) {
           alert("Oops. " + err.message);
@@ -154,6 +165,7 @@ export default {
         name: value.name,
         desc: value.desc,
         amount: value.amount,
+        imgurl: value.imgurl,
         cost: value.cost
       });
       this.getAllItems();

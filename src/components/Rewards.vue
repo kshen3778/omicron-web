@@ -12,7 +12,7 @@
         <div v-for="value in items" class="col-lg-4">
 
               <div v-if="value" class="card mx-auto">
-                <img class="card-img-top" :src="getImage(value[1].imgsrc + '.png')">
+                <img class="card-img-top" :src="value[1].imgurl">
                 <div class="card-body">
                   <h5 class="card-title">{{value[1].name}}</h5>
                   <p class="card-text">{{value[1].desc}}</p>

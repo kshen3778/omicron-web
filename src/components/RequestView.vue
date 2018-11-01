@@ -86,7 +86,7 @@ export default {
   data () {
 
     this.getAllRequests();
-    this.getUserData(); //REMOVE AFTER TESTS
+    //this.getUserData(); //REMOVE AFTER TESTS
     return {
       requests_list: {},
 
