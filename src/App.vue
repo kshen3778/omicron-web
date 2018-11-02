@@ -1,24 +1,45 @@
 <template>
-  <div id="app">
 
+
+  <div id="app">
+    <v-app>
     <app-header></app-header>
 
     <br>
     <router-view></router-view>
 
-    <footer class="footer-basic-centered">
+    <v-footer
+    height="auto"
+    color="primary lighten-1">
+    <v-layout
+      justify-center
+      row
+      wrap>
+      <v-btn
+        v-for="link in links"
+        :key="link[0]"
+        color="white"
+        :href="link[1]"
+        flat
+        round>
+        <b>{{ link[0] }}</b>
+      </v-btn>
+      <v-flex
+        primary
+        lighten-2
+        py-3
+        text-xs-center
+        white--text
+        xs12>
+        &copy;2018 — <strong>Omicron Brokerage Group Inc.</strong>
+      </v-flex>
+    </v-layout>
+  </v-footer>
 
-			<p class="footer-links">
-				<a href="http://omcn.tech/">About Us</a>
-				·
-				<a href="mailto:contact@omcn.tech">Contact Us: contact@omcn.tech</a>
-			</p>
-
-			<p class="footer-company-name">Omicron Brokerage Group Inc. &copy; 2018</p>
-
-		</footer>
+  </v-app>
 
   </div>
+
 </template>
 
 <script>
@@ -29,9 +50,16 @@
     components: {
       'app-header': Header
     },
-    methods: {
-
+    data () {
+      return {
+        links: [
+          ['Home', '/'],
+          ['About Us', 'http://omcn.tech/'],
+          ['Contact Us', 'mailto:contact@omcn.tech']
+        ]
+      }
     }
+
 
   }
 </script>

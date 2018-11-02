@@ -18,6 +18,12 @@ import ReviewPage from '@/components/ReviewPage'
 
 import firebase from 'firebase'
 
+import Vuetify from 'vuetify'
+
+import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
+Vue.use(Vuetify)
+
+
 Vue.use(Router)
 Vue.use(BootstrapVue);
 
