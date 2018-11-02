@@ -1,21 +1,35 @@
 <template>
-  <div class="hello">
-    <h1>Dashboard</h1>
-
+  <div>
+  <h1>Dashboard</h1>
 
     <br>
     <br>
 
     <div v-for="products in groupedProducts" class="row p-5">
       <div v-for="value in products" class="col-lg-4">
-            <div v-if="value" class="card mx-auto" :src="value[1].imgurl">
+            <!--<div v-if="value" class="card mx-auto" :src="value[1].imgurl">
               <img class="card-img-top" :src="value[1].imgurl">
               <div class="card-body">
                 <h5 class="card-title">{{value[1].name}}</h5>
                 <p class="card-text">{{value[1].desc}}</p>
                 <router-link :to="'/review/'+value[1].id">Send Feedback</router-link>
               </div>
-            </div>
+            </div>-->
+                <v-card>
+                  <v-img
+                    height="200px"
+                    :src="value[1].imgurl">
+                  </v-img>
+                  <v-card-title>
+                    <div>
+                      <h3>{{value[1].name}}</h3><br>
+                      <span>{{value[1].desc}}</span><br>
+                    </div>
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-btn flat color="orange"><router-link :to="'/review/'+value[1].id">Send Feedback</router-link></v-btn>
+                  </v-card-actions>
+                </v-card>
             <br>
       </div>
     </div>
