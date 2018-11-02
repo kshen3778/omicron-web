@@ -3,14 +3,15 @@
 
   <div id="app">
     <v-app>
-    <app-header></app-header>
 
+    <app-header></app-header>
     <br>
-    <router-view></router-view>
+    <router-view class="Site-content"></router-view>
 
     <v-footer
     height="auto"
-    color="primary lighten-1">
+    color="primary lighten-1"
+    >
     <v-layout
       justify-center
       row
@@ -65,6 +66,8 @@
 </script>
 
 <style>
+
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -75,7 +78,18 @@
   overflow-x: hidden;
 }
 
-.footer-basic-centered{
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}
+
+
+/*.footer-basic-centered{
 	background-color: #292c2f;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
 	box-sizing: border-box;
@@ -113,7 +127,6 @@
 	color: inherit;
 }
 
-/* If you don't want the footer to be responsive, remove these media queries */
 
 @media (max-width: 600px) {
 
@@ -137,5 +150,5 @@
 	.footer-basic-centered .footer-links a{
 		line-height: 1.8;
 	}
-}
+}*/
 </style>
