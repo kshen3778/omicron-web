@@ -1,7 +1,6 @@
 <template>
-  <div class="hello">
-    <div v-for="product in product" class="col-lg-4 col-centered">
-
+  <div>
+    <div v-for="product in productinfo" class="col-lg-4 col-centered">
         <img class="card-img-top" :src="product.imgurl">
         <div class="card-body">
           <h5 class="card-title">{{product.name}}</h5>
@@ -10,7 +9,6 @@
         </div>
 
     </div>
-
   </div>
 </template>
 
@@ -22,21 +20,24 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 export default {
   name: 'reviewpage',
 
-  data () {
-
-    this.getProductInfo();
+  data() {
     return {
-      product: {}
+      productinfo: {}
     }
+  },
+
+  created() {
+    this.getProductInfo();
   },
 
   methods: {
 
     getProductInfo: function(){
       var obj = this;
+      console.log(obj.$route.params.id);
       firebase.database().ref('products').orderByChild('id').equalTo(obj.$route.params.id).on("value", function(snapshot) {
           console.log(snapshot.val());
-          obj.product = snapshot.val();
+          obj.productinfo = snapshot.val();
       });
     }
 

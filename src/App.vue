@@ -6,7 +6,6 @@
 
     <!--<app-header></app-header>-->
     <v-toolbar dark color="primary">
-     <v-toolbar-side-icon></v-toolbar-side-icon>
      <v-toolbar-title>Omicron</v-toolbar-title>
      <v-spacer></v-spacer>
      <v-toolbar-items class="hidden-sm-and-down">
