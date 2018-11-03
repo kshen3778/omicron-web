@@ -4,7 +4,19 @@
   <div id="app">
     <v-app>
 
-    <app-header></app-header>
+    <!--<app-header></app-header>-->
+    <v-toolbar dark color="primary">
+     <v-toolbar-side-icon></v-toolbar-side-icon>
+     <v-toolbar-title>Omicron</v-toolbar-title>
+     <v-spacer></v-spacer>
+     <v-toolbar-items class="hidden-sm-and-down">
+       <v-btn flat to="/">Dashboard</v-btn>
+       <v-btn flat to="/rewards">Rewards</v-btn>
+       <v-btn flat to="/profile">My Account</v-btn>
+       <v-btn flat v-on:click="logout">Logout</v-btn>
+     </v-toolbar-items>
+   </v-toolbar>
+
     <br>
     <router-view class="Site-content"></router-view>
 
@@ -59,6 +71,15 @@
           ['Contact Us', 'mailto:contact@omcn.tech']
         ]
       }
+    },
+    methods: {
+
+      logout: function() {
+        firebase.auth().signOut().then(() => {
+          this.$router.replace('login')
+        })
+        location.reload();
+      }
     }
 
 
@@ -69,9 +90,6 @@
 
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   max-width: 100%;
