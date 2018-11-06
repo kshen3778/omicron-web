@@ -8,10 +8,7 @@
     <div v-for="products in groupedProducts" class="row p-5">
       <div v-for="value in products" class="col-lg-4">
                 <v-card>
-                  <v-img
-                    height="200px"
-                    :src="value[1].imgurl">
-                  </v-img>
+                  <img class="card-img-top" :src="value[1].imgurl">
                   <v-card-title>
                     <div>
                       <h3>{{value[1].name}}</h3><br>

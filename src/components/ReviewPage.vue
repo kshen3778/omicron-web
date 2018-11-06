@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div v-for="product in productinfo" class="col-lg-4 col-centered">
-        <img class="card-img-top" :src="product.imgurl">
+    <div v-for="product in productinfo">
+        <img class="card-img-top" style="width:30%;":src="product.imgurl">
         <div class="card-body">
-          <h5 class="card-title">{{product.name}}</h5>
-          <p class="card-text">{{product.desc}}</p>
-          <a :href="product.link" target="_blank" class="card-link">Submit Feedback</a>
+          <h2 class="card-title">{{product.name}}</h2>
+          <h2 class="card-text">{{product.desc}}</h2>
+          <h3><a :href="product.link" target="_blank" class="card-link">Submit Feedback</a></h3>
         </div>
-
     </div>
   </div>
 </template>
