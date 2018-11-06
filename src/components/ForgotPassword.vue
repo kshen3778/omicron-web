@@ -1,7 +1,18 @@
 <template>
   <div class="sign-up">
     <p>Enter your email:</p>
-    <input type="text" v-model="email" placeholder="Email"><br>
+    <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="resetPassword()"><br>
+    <v-alert v-if="status == 'success'"
+        :value="true"
+        type="success">
+        Please check your inbox for further instructions.
+    </v-alert>
+
+    <v-alert v-else-if="status == 'error'"
+        :value="true"
+        type="error">
+        Oops. {{errormsg}}
+    </v-alert>
     <button v-on:click="resetPassword()">Send Reset Link</button>
     <span>or go back to <router-link to="/login">login</router-link>.</span>
   </div>
@@ -14,19 +25,22 @@
     name: 'forgotPassword',
     data: function() {
       return {
-        email: ''
+        email: '',
+        status: '',
+        errormsg: ''
       }
     },
     methods: {
       resetPassword: function() {
+        var obj = this;
         var auth = firebase.auth();
         var emailAddress = this.email;
 
         auth.sendPasswordResetEmail(emailAddress).then(function() {
-            alert("Reset Link Has been sent to: " + emailAddress);
+          obj.status = "success";
         }).catch(function(error) {
-            alert("Oops. " + err.message)
-            console.log(error);
+          obj.status = "error";
+          obj.errormsg = "This email does not exist.";
         });
       }
     }

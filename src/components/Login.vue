@@ -1,8 +1,13 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <input type="text" v-model="email" placeholder="Email"><br>
-    <input type="password" v-model="password" placeholder="Password"><br>
+    <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="signIn"><br>
+    <input type="password" v-model="password" placeholder="Password" v-on:keyup.enter="signIn"><br>
+    <v-alert v-if="status == 'error'"
+        :value="true"
+        type="error">
+        Oops. {{errormsg}}
+    </v-alert>
     <button v-on:click="signIn">Login</button>
     <p>You don't have an account ? You can <router-link to="/sign-up">create one</router-link></p>
     <p>Forgot your password ? You can <router-link to="/forgot-password">reset it</router-link></p>
@@ -17,11 +22,14 @@
     data: function() {
       return {
         email: '',
-        password: ''
+        password: '',
+        status: '',
+        errormsg: ''
       }
     },
     methods: {
       signIn: function() {
+        var obj = this;
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
             //only sign them in if email is verified
@@ -31,15 +39,17 @@
             }else{
               firebase.auth().signOut().then(function() {
                   //sign user out
-                  alert('Please verify your email first.');
+                  obj.status = "error";
+                  obj.errormsg = "Please check your inbox and verify your email.";
               }).catch(function(error) {
-                alert("Oops. " + err.message)
-                  console.log(error);
+                obj.status = "error";
+                obj.errormsg = err.message;
               });
             }
           },
           (err) => {
-            alert('Oops. ' + err.message)
+            obj.status = "error";
+            obj.errormsg = "User does not exist.";
           }
         );
       }

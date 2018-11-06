@@ -1,10 +1,23 @@
 <template>
   <div class="sign-up">
     <p>Let's create a new account !</p>
-    <input type="text" v-model="email" placeholder="Email"><br>
-    <input type="password" v-model="password" placeholder="Password"><br>
-    <input type="text" v-model="name" placeholder="Full Name"><br>
-    <input type="text" v-model="address" placeholder="Full Mailing Address"><br>
+    <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="signUp"><br>
+    <input type="password" v-model="password" placeholder="Password" v-on:keyup.enter="signUp"><br>
+    <input type="text" v-model="name" placeholder="Full Name" v-on:keyup.enter="signUp"><br>
+    <input type="text" v-model="address" placeholder="Full Mailing Address" v-on:keyup.enter="signUp"><br>
+
+    <v-alert v-if="status == 'success'"
+        :value="true"
+        type="success">
+        Please check your inbox and verify your email.
+    </v-alert>
+
+    <v-alert v-else-if="status == 'error'"
+        :value="true"
+        type="error">
+        Oops. {{errormsg}}
+    </v-alert>
+
     <button v-on:click="signUp">Sign Up</button>
     <span>or go back to <router-link to="/login">login</router-link>.</span>
   </div>
@@ -20,11 +33,14 @@
         email: '',
         password: '',
         name: '',
-        address: ''
+        address: '',
+        status: '',
+        errormsg: ''
       }
     },
     methods: {
       signUp: function() {
+        var obj = this;
         var name = this.name;
         var address = this.address;
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => {
@@ -39,28 +55,29 @@
                         points: 0,
                         admin: false
                   }).catch(function(error){
-                        console.log(error);
-                        alert("Error");
+                        obj.status = "error";
+                        obj.errormsg = error.message;
                   });
 
                   firebase.auth().signOut().then(function() {
-                      //sign user out
-                      alert("Please check your inbox and verify your email");
+                      obj.status = "success";
                   }).catch(function(error) {
-                      alert("Oops. " + err.message)
-                      console.log(error);
+                      obj.status = "error";
+                      obj.errormsg = error.message;
                   });
 
             }).catch(function(error) {
                   // An error happened.
-                  console.log(error);
+                  obj.status = "error";
+                  obj.errormsg = error.message;
             });
 
             //this.$router.replace('hello')
 
           },
           (err) => {
-            alert('Oops. ' + err.message)
+            obj.status = "error";
+            obj.errormsg = err.message;
           }
         );
       }
