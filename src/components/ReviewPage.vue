@@ -6,6 +6,8 @@
           <h2 class="card-title">{{product.name}}</h2>
           <h2 class="card-text">{{product.desc}}</h2>
           <h3><a :href="product.link" target="_blank" class="card-link">Submit Feedback</a></h3>
+          <br>
+          <h2>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h2>
         </div>
     </div>
   </div>

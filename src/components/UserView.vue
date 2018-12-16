@@ -29,7 +29,7 @@
           <br>
           Address: {{value.address}}
           <br>
-          
+
           <button type="button" class="btn btn-primary" v-b-modal="''+key">Edit</button>
 
           <b-modal :id="''+key" :title="key">
@@ -62,12 +62,12 @@ export default {
   name: 'userview',
   data () {
 
-    this.getUserData(); //REMOVE AFTER TESTS
+    //this.getUserData(); //REMOVE AFTER TESTS
     return {
       rewardItem_msg: "",
       email: "",
       password: "",
-      logged_in: true, //DEFAULT: False
+      //logged_in: true, //DEFAULT: False
       user_data: {},
       user: {},
       points: 0,
@@ -80,10 +80,12 @@ export default {
     searchUser: function(userEmail) {
       console.log(userEmail);
       var obj = this;
-      firebase.database().ref('users').orderByChild('email').equalTo(userEmail).on("value", function(snapshot){
+      firebase.database().ref("users/").orderByChild("email").equalTo(userEmail).once("value").then(function (snapshot){
+        console.log(snapshot.val());
         obj.user = snapshot.val();
-        console.log(obj.user);
       });
+
+      console.log("end");
     },
 
     addPoints: function(key, currentPoints, points) {
@@ -102,6 +104,7 @@ export default {
       //Retrieve User Data
       firebase.database().ref('users/'+userid).once('value').then(function(snapshot) {
           obj.user_data = snapshot.val();
+          //console.log(obj.user_data);
       });
     }
 

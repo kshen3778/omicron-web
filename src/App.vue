@@ -8,7 +8,7 @@
     <v-toolbar dark color="primary">
      <v-toolbar-title>Omicron</v-toolbar-title>
      <v-spacer></v-spacer>
-     <v-toolbar-items class="hidden-sm-and-down">
+     <v-toolbar-items class="hidden-sm-and-down" v-if="loggedIn">
        <v-btn flat to="/">Dashboard</v-btn>
        <v-btn flat to="/rewards">Rewards</v-btn>
        <v-btn flat to="/profile">My Account</v-btn>
@@ -61,6 +61,15 @@
     name: 'app',
     components: {
       'app-header': Header
+    },
+    computed: {
+      loggedIn: function(){
+        var user = firebase.auth().currentUser;
+        if(user){
+          return true;
+        }
+        return false;
+      }
     },
     data () {
       return {
