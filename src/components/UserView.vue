@@ -23,6 +23,8 @@
         <b-list-group-item>
           {{key}}
           <br>
+          Name: {{value.name}}
+          <br>
           {{value.email}}
           <br>
           Points: {{value.points}}

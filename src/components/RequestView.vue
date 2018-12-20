@@ -9,6 +9,7 @@
     <button type="button" class="btn btn-info" v-on:click="getNonProcessedRequests()">Get Non-processed Requests</button>
     <button type="button" class="btn btn-info" v-on:click="getProcessedRequests()">Get Processed Requests</button>
     <button type="button" class="btn btn-info" v-on:click="getAllRequests()">View All Requests</button>
+    <button type="button" class="btn btn-danger" v-on:click="deleteProcessedRequests()">Delete Processed Requests</button>
     <br>
     <br>
 
@@ -95,6 +96,21 @@ export default {
   },
   methods: {
 
+    deleteProcessedRequests: function() {
+      var obj = this;
+      var ref = firebase.database().ref('requests');
+      if(confirm("Are you sure?")){
+        ref.orderByChild('completed').equalTo(true).on("value", function(snapshot){
+          snapshot.forEach(function(childSnapshot) {
+              //remove each child
+              console.log("delete");
+              ref.child(childSnapshot.key).remove();
+              //obj.getAllRequests();
+          });
+        });
+      }
+    },
+
     getNonProcessedRequests: function() {
       var obj = this;
       firebase.database().ref('requests').orderByChild('completed').equalTo(false).on("value", function(snapshot){
@@ -107,7 +123,7 @@ export default {
       var obj = this;
       firebase.database().ref('requests').orderByChild('completed').equalTo(true).on("value", function(snapshot){
         obj.requests_list = snapshot.val();
-        console.log(obj.requests_list);
+        console.log("Processed Requests: " + obj.requests_list);
       });
     },
 
@@ -122,6 +138,7 @@ export default {
     changeStatus: function(key, status){
 
       if(status == "complete"){
+        console.log("Mark as completed");
         //edit a request's status
         firebase.database().ref('requests/' + key).update({
           completed: true
@@ -134,7 +151,7 @@ export default {
         });
       }
 
-      this.getAllRequests();
+      //this.getAllRequests();
     },
 
     getUserData: function(){

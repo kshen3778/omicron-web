@@ -13,6 +13,7 @@
         <router-link to="/admin/products">Products</router-link>
         <router-link to="/admin/rewards">Rewards</router-link>
         <router-link to="/admin/requests">Requests</router-link>
+        <router-link to="/admin/users">Users</router-link>
         <br>
       </div>
 
