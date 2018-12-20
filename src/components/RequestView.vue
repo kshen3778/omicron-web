@@ -9,7 +9,6 @@
     <button type="button" class="btn btn-info" v-on:click="getNonProcessedRequests()">Get Non-processed Requests</button>
     <button type="button" class="btn btn-info" v-on:click="getProcessedRequests()">Get Processed Requests</button>
     <button type="button" class="btn btn-info" v-on:click="getAllRequests()">View All Requests</button>
-    <button type="button" class="btn btn-danger" v-on:click="deleteProcessedRequests()">Delete Processed Requests</button>
     <br>
     <br>
 
@@ -61,7 +60,9 @@
                   </b-form-group>
                   <div slot="modal-footer">
                     <button type="button" class="btn btn-success" v-if="!value.completed" v-on:click="changeStatus(key, 'complete')">Mark as Processed</button>
-                    <button type="button" class="btn btn-danger" v-if="value.completed" v-on:click="changeStatus(key, 'incomplete')">Change to Unprocessed</button>
+                    <button type="button" class="btn btn-warning" v-if="value.completed" v-on:click="changeStatus(key, 'incomplete')">Change to Unprocessed</button>
+                    <button type="button" class="btn btn-danger" v-if="value.completed" v-on:click="deleteRequest(key)">Delete</button>
+
                   </div>
                 </b-modal>
               </b-list-group-item>
@@ -96,19 +97,22 @@ export default {
   },
   methods: {
 
-    deleteProcessedRequests: function() {
+    deleteRequest: function(key) {
       var obj = this;
       var ref = firebase.database().ref('requests');
       if(confirm("Are you sure?")){
-        ref.orderByChild('completed').equalTo(true).on("value", function(snapshot){
+        /*ref.orderByChild('completed').equalTo(true).on("value", function(snapshot){
           snapshot.forEach(function(childSnapshot) {
               //remove each child
               console.log("delete");
               ref.child(childSnapshot.key).remove();
               //obj.getAllRequests();
           });
-        });
+        });*/
+        firebase.database().ref('requests/' + key).remove();
+        console.log("delete");
       }
+      this.getAllRequests();
     },
 
     getNonProcessedRequests: function() {
@@ -151,7 +155,7 @@ export default {
         });
       }
 
-      //this.getAllRequests();
+      this.getAllRequests();
     },
 
     getUserData: function(){
