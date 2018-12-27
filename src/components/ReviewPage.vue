@@ -8,10 +8,14 @@
           <!--<h3><a :href="product.link" target="_blank" class="card-link">Submit Feedback</a></h3>-->
           <div v-if="allow_submission">
             <div id="typeform" style="width: 100%; height: 300px;"></div>
+            <br>
+            <h2>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h2>
           </div>
 
-          <br>
-          <h2>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h2>
+          <div v-if="!allow_submission">
+            <h2>Your response has been submitted.</h2>
+          </div>
+
         </div>
     </div>
   </div>
@@ -31,7 +35,7 @@ export default {
 
 
     return {
-      allow_submission: false,
+      allow_submission: true,
       productkey: "",
       productinfo: {},
       user_data: {}
@@ -44,103 +48,101 @@ export default {
     this.canSubmit();
   },
 
+  mounted: function () {
+    this.loadForm();
+  },
+
   updated: function () {
-    var obj = this;
-
-    console.log(obj.user_data);
-    console.log("key: " + obj.productkey);
-    console.log(obj.productinfo[obj.productkey]);
-
-    axios.get('https://api.typeform.com/forms/mCn4ao/responses?page_size=1', {
-       headers: {
-         Authorization: 'bearer ' + process.env.TYPEFORM_TOKEN
-       }
-    })
-    .then(function(response) {
-      // JSON responses are automatically parsed.
-      console.log(response.data.items[0]);
-    });
-
-    const embedElement = document.querySelector('#typeform');
-    typeformEmbed.makeWidget(
-      embedElement,
-      'https://omcn.typeform.com/to/mCn4ao',
-      {
-        hideHeaders: true,
-        hideFooter: true,
-        opacity: 75,
-        buttonText: "Take the survey!",
-        onSubmit: function () {
-
-          //once hidden elements are activated, query the first 25 and then search for one where the hidden userid matches current userid
-
-          var productinfo = obj.productinfo[obj.productkey]
-
-          axios.get('https://api.typeform.com/forms/mCn4ao/responses?page_size=1', {
-             headers: {
-               Authorization: 'bearer ' + process.env.TYPEFORM_TOKEN
-             }
-          })
-          .then(function(response) {
-
-            console.log(response.data.items[0]);
-            var sub_id = response.data.items[0].response_id;
-            //Create Feedback requests
-            firebase.database().ref('feedback/' + sub_id).set({
-                  user_id: firebase.auth().currentUser.uid,
-                  user_email: obj.user_data.email,
-                  user_name: obj.user_data.name,
-                  product_id: obj.productkey,
-                  product_name: productinfo.name,
-                  product_form_link: productinfo.link,
-                  date: new Date().toLocaleString()
-            });
-
-            //Create feedback subrequests under user
-            firebase.database().ref('users/'+ firebase.auth().currentUser.uid +'/feedback/' + sub_id).set({
-                 product_id: obj.productkey,
-                 product_name: productinfo.name,
-                 product_form_link: productinfo.link,
-                 date: new Date().toLocaleString()
-            });
-
-
-          });
-
-
-        }
-      }
-    )
+    this.loadForm();
   },
 
   methods: {
 
-    //returns false if user has already submitted a response in the last 72 hours.
+    loadForm: function(){
+      var obj = this;
+      var productinfo = obj.productinfo[obj.productkey]
+
+
+      const embedElement = document.querySelector('#typeform');
+      typeformEmbed.makeWidget(
+        embedElement,
+        productinfo.link,
+        {
+          hideHeaders: true,
+          hideFooter: true,
+          opacity: 75,
+          buttonText: "Take the survey!",
+          onSubmit: function () {
+
+            //TODO: once hidden elements are activated, query the first 25 and then search for one where the hidden userid matches current userid
+
+            var link = productinfo.link.split("/");
+            var form_id = link[link.length - 1] //get the form id from product link
+
+            console.log(form_id);
+
+            axios.get('https://api.typeform.com/forms/' + form_id + '/responses?page_size=1', {
+               headers: {
+                 Authorization: 'bearer ' + process.env.TYPEFORM_TOKEN
+               }
+            })
+            .then(function(response) {
+
+              var sub_id = response.data.items[0].response_id;
+              //Create Feedback requests
+              firebase.database().ref('feedback/' + sub_id).set({
+                    user_id: firebase.auth().currentUser.uid,
+                    user_email: obj.user_data.email,
+                    user_name: obj.user_data.name,
+                    product_id: obj.productkey,
+                    product_name: productinfo.name,
+                    product_form_link: productinfo.link,
+                    date: new Date().toLocaleString()
+              });
+
+              //Create feedback subrequests under user
+              firebase.database().ref('users/'+ firebase.auth().currentUser.uid +'/feedback/' + sub_id).set({
+                   product_id: obj.productkey,
+                   product_name: productinfo.name,
+                   product_form_link: productinfo.link,
+                   date: new Date().toLocaleString()
+              });
+
+              //Add Points
+              firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
+                points: obj.user_data.points + 100
+              });
+
+
+            });
+
+
+          }
+        }
+      )
+    },
+
+    //sets allow_submission to false if user has already submitted a response in the last 72 hours.
     canSubmit: function(){
       var obj = this;
-      //get current time minus one week
+      //get current time minus 3 days
       var d = new Date();
-      d.setDate(d.getDate() - 7);
-      console.log(d);
+      d.setDate(d.getDate() - 3);
 
       var userid = firebase.auth().currentUser.uid;
 
       firebase.database().ref('users/'+ userid +'/feedback').orderByChild("date").startAt(d.toLocaleString()).on("value", function(snapshot) {
 
-          console.log(snapshot.val());
           if(snapshot.val() == null){
             obj.allow_submission = true;
           }else{
             //check if it's for this specific form
             snapshot.forEach(function(child){
-              console.log(child.key, child.val());
               if(child.val().product_id == obj.productkey){
                 obj.allow_submission = false;
-
               }
             });
 
-            obj.allow_submission = true;
 
           }
       });
@@ -154,14 +156,12 @@ export default {
       //Retrieve User Data
       firebase.database().ref('users/'+userid).once('value').then(function(snapshot) {
           obj.user_data = snapshot.val();
-          console.log(obj.user_data);
       });
 
     },
 
     getProductInfo: function(){
       var obj = this;
-      console.log(obj.$route.params.id);
       firebase.database().ref('products').orderByChild('id').equalTo(obj.$route.params.id).on("value", function(snapshot) {
           console.log(snapshot.val());
           obj.productinfo = snapshot.val();
