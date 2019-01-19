@@ -61,12 +61,12 @@ export default {
     loadForm: function(){
       var obj = this;
       var productinfo = obj.productinfo[obj.productkey]
-
+      var userid = firebase.auth().currentUser.uid;
 
       const embedElement = document.querySelector('#typeform');
       typeformEmbed.makeWidget(
         embedElement,
-        productinfo.link,
+        productinfo.link + "?user_id="+userid,
         {
           hideHeaders: true,
           hideFooter: true,
@@ -74,44 +74,58 @@ export default {
           buttonText: "Take the survey!",
           onSubmit: function () {
 
-            //TODO: once hidden elements are activated, query the first 25 and then search for one where the hidden userid matches current userid
+            //TODO: once hidden elements are activated, query the first 10 and then search for one where the hidden userid matches current userid
 
-            var link = productinfo.link.split("/");
+            var link = productinfo.link.split("?")[0].split("/");
             var form_id = link[link.length - 1] //get the form id from product link
 
             console.log(form_id);
+            console.log(productinfo.link + "?user_id="+userid);
 
-            axios.get('https://api.typeform.com/forms/' + form_id + '/responses?page_size=1', {
+            //get all responses for this form
+            axios.get('https://api.typeform.com/forms/' + form_id + '/responses?page_size=10', {
                headers: {
                  Authorization: 'bearer ' + process.env.TYPEFORM_TOKEN
                }
             })
             .then(function(response) {
 
-              var sub_id = response.data.items[0].response_id;
-              //Create Feedback requests
-              firebase.database().ref('feedback/' + sub_id).set({
-                    user_id: firebase.auth().currentUser.uid,
-                    user_email: obj.user_data.email,
-                    user_name: obj.user_data.name,
-                    product_id: obj.productkey,
-                    product_name: productinfo.name,
-                    product_form_link: productinfo.link,
-                    date: new Date().toLocaleString()
-              });
+              //Query first 10 elements
+              for(var i = 0; i<response.data.items.length; i++){
+                if(response.data.items[i].hidden){
+                  if(response.data.items[i].hidden.user_id == userid){
+                    var sub_id = response.data.items[i].response_id;
+                    var user_id = response.data.items[i].hidden.user_id;
+                    console.log("Found: " + sub_id + " , " + user_id);
+                    //Create Feedback requests
+                    firebase.database().ref('feedback/' + sub_id).set({
+                          user_id: firebase.auth().currentUser.uid,
+                          user_email: obj.user_data.email,
+                          user_name: obj.user_data.name,
+                          product_id: obj.productkey,
+                          product_name: productinfo.name,
+                          product_form_link: productinfo.link,
+                          date: new Date().toLocaleString()
+                    });
 
-              //Create feedback subrequests under user
-              firebase.database().ref('users/'+ firebase.auth().currentUser.uid +'/feedback/' + sub_id).set({
-                   product_id: obj.productkey,
-                   product_name: productinfo.name,
-                   product_form_link: productinfo.link,
-                   date: new Date().toLocaleString()
-              });
+                    //Create feedback subrequests under user
+                    firebase.database().ref('users/'+ firebase.auth().currentUser.uid +'/feedback/' + sub_id).set({
+                         product_id: obj.productkey,
+                         product_name: productinfo.name,
+                         product_form_link: productinfo.link,
+                         date: new Date().toLocaleString()
+                    });
 
-              //Add Points
-              firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
-                points: obj.user_data.points + 100
-              });
+                    //Add Points
+                    firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
+                      points: obj.user_data.points + 100
+                    });
+                  }
+                }
+              }
+
+
+
 
 
             });
