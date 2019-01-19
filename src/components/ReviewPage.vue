@@ -90,13 +90,21 @@ export default {
             })
             .then(function(response) {
 
+              var found = false;
               //Query first 10 elements
               for(var i = 0; i<response.data.items.length; i++){
+
+                if(found){ //the first element with matching user id is found already
+                  break;
+                }
+
+                //check the hidden user id
                 if(response.data.items[i].hidden){
                   if(response.data.items[i].hidden.user_id == userid){
-                    var sub_id = response.data.items[i].response_id;
+                    var sub_id = response.data.items[i].response_id; //response id
                     var user_id = response.data.items[i].hidden.user_id;
                     console.log("Found: " + sub_id + " , " + user_id);
+                    found = true;
                     //Create Feedback requests
                     firebase.database().ref('feedback/' + sub_id).set({
                           user_id: firebase.auth().currentUser.uid,

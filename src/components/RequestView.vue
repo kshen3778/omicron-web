@@ -30,6 +30,7 @@
 
                 <button type="button" class="btn btn-danger" v-if="!value.completed">Not Processed</button>
                 <button type="button" class="btn btn-success" v-if="value.completed">Processed</button>
+                <button type="button" class="btn btn-danger" v-if="value.completed" v-on:click="deleteRequest(key)">Delete</button>
 
 
                 <b-modal :id="''+key" :title="key">
@@ -61,7 +62,6 @@
                   <div slot="modal-footer">
                     <button type="button" class="btn btn-success" v-if="!value.completed" v-on:click="changeStatus(key, 'complete')">Mark as Processed</button>
                     <button type="button" class="btn btn-warning" v-if="value.completed" v-on:click="changeStatus(key, 'incomplete')">Change to Unprocessed</button>
-                    <button type="button" class="btn btn-danger" v-if="value.completed" v-on:click="deleteRequest(key)">Delete</button>
 
                   </div>
                 </b-modal>
@@ -99,16 +99,7 @@ export default {
 
     deleteRequest: function(key) {
       var obj = this;
-      var ref = firebase.database().ref('requests');
       if(confirm("Are you sure?")){
-        /*ref.orderByChild('completed').equalTo(true).on("value", function(snapshot){
-          snapshot.forEach(function(childSnapshot) {
-              //remove each child
-              console.log("delete");
-              ref.child(childSnapshot.key).remove();
-              //obj.getAllRequests();
-          });
-        });*/
         firebase.database().ref('requests/' + key).remove();
         console.log("delete");
       }
