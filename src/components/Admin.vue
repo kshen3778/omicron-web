@@ -3,8 +3,8 @@
   <div>
       <div class="login" v-if="!logged_in">
         <h3>Sign In</h3>
-        <input type="text" v-model="email" placeholder="Email"><br>
-        <input type="password" v-model="password" placeholder="Password"><br>
+        <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="signIn"><br>
+        <input type="password" v-model="password" placeholder="Password" v-on:keyup.enter="signIn"><br>
         <button v-on:click="signIn">Log In</button>
       </div>
 

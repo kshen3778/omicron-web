@@ -61,7 +61,9 @@
                 <br>
                 {{value.imgurl}}
                 <br>
-                <button type="button" class="btn btn-primary" v-on:click="test(key)" v-b-modal="''+key">Edit</button>
+                Active: {{value.active}}
+                <br>
+                <button type="button" class="btn btn-primary" v-b-modal="''+key">Edit</button>
                 <button type="button" class="btn btn-danger" v-on:click="deleteProduct(key)">Delete</button>
 
                 <b-modal :id="''+key" :title="value.name">
@@ -90,7 +92,10 @@
                                 label-class="text-sm-right">
                     <b-form-input v-model="value.imgurl"></b-form-input>
                   </b-form-group>
+
                   <div slot="modal-footer">
+                    <button type="button" class="btn btn-danger" v-if="value.active" v-on:click="setActive(key, false)">Deactivate</button>
+                    <button type="button" class="btn btn-success" v-if="!value.active" v-on:click="setActive(key, true)">Activate</button>
                     <button type="button" class="btn btn-primary" v-on:click="saveChanges(key, value)">Save Changes</button>
                   </div>
                 </b-modal>
@@ -127,9 +132,18 @@ export default {
 
   },
   methods: {
-    test: function(test){
-      console.log(test);
+
+    //Activates and deactivates a product
+    setActive: function(key, val){
+      firebase.database().ref('products/' + key).update({
+        active: val
+      }).catch(function(error) {
+          alert("Oops. " + err.message);
+          console.log(error);
+      });
+      this.getAllProducts();
     },
+
     getAllProducts: function() {
       var obj = this;
       firebase.database().ref('products').once('value').then(function(snapshot) {
@@ -144,7 +158,8 @@ export default {
         desc: product.desc,
         link: product.link,
         id: product.id,
-        imgurl: product.imgurl
+        imgurl: product.imgurl,
+        active: true
       }).catch(function(error) {
           alert("Oops. " + err.message);
           console.log(error);
@@ -161,14 +176,19 @@ export default {
         link: value.link,
         id: value.id,
         imgurl: value.imgurl
-      });
+      }).catch(function(error) {
+          alert("Oops. " + err.message);
+          console.log(error);
+      });;
       this.getAllProducts();
     },
 
     deleteProduct: function(key){
-      //delete a product
-      firebase.database().ref('products/' + key).remove();
-      this.getAllProducts();
+      if(confirm("Are you sure?")){
+        //delete a product
+        firebase.database().ref('products/' + key).remove();
+        this.getAllProducts();
+      }
     },
     getUserData: function(){
       var obj = this;
@@ -176,7 +196,10 @@ export default {
       //Retrieve User Data
       firebase.database().ref('users/'+userid).once('value').then(function(snapshot) {
           obj.user_data = snapshot.val();
-      });
+      }).catch(function(error) {
+          alert("Oops. " + err.message);
+          console.log(error);
+      });;
     }
 
   }

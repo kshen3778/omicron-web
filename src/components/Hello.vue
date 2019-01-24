@@ -102,7 +102,7 @@ export default {
     },
     getAllProducts: function() {
       var obj = this;
-      firebase.database().ref('products').once('value').then(function(snapshot) {
+      firebase.database().ref('products').orderByChild("active").equalTo(true).once('value').then(function(snapshot) {
         obj.products = snapshot.val();
         console.log(JSON.stringify(obj.products));
         //obj.products = obj.getImages(obj.products);
