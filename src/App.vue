@@ -43,7 +43,7 @@
         text-xs-center
         white--text
         xs12>
-        &copy;2018 — <strong>Omicron Brokerage Group Inc.</strong>
+        &copy;2019 — <strong>Omicron Brokerage Group Inc.</strong>
       </v-flex>
     </v-layout>
   </v-footer>

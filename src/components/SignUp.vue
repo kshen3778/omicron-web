@@ -1,25 +1,64 @@
 <template>
   <div class="sign-up">
-    <p>Let's create a new account !</p>
-    <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="signUp"><br>
-    <input type="password" v-model="password" placeholder="Password" v-on:keyup.enter="signUp"><br>
-    <input type="text" v-model="name" placeholder="Full Name" v-on:keyup.enter="signUp"><br>
-    <input type="text" v-model="address" placeholder="Full Mailing Address" v-on:keyup.enter="signUp"><br>
+    <h3>Let's create a new account !</h3>
+    <br>
 
-    <v-alert v-if="status == 'success'"
+    <v-form class="input-form"
+     ref="form"
+     lazy-validation>
+
+     <v-text-field
+       v-model="name"
+       label="Full Name"
+       v-on:keyup.enter="signUp"
+       required>
+     </v-text-field>
+
+     <v-text-field
+       v-model="email"
+       label="E-mail"
+       v-on:keyup.enter="signUp"
+       required>
+     </v-text-field>
+
+     <v-text-field
+       v-model="address"
+       label="Full Mailing Address"
+       v-on:keyup.enter="signUp"
+       required>
+     </v-text-field>
+
+     <v-text-field
+       v-model="password"
+       :append-icon="show1 ? 'visibility_off' : 'visibility'"
+       :type="show1 ? 'text' : 'password'"
+       @click:append="show1 = !show1"
+       v-on:keyup.enter="signUp"
+       hint="At least 6 characters"
+       label="Password"
+     ></v-text-field>
+
+     <v-btn
+       color="success"
+       v-on:click="signUp">
+       Sign Up
+     </v-btn>
+
+    </v-form>
+
+    <v-alert class="input-form" v-if="status == 'success'"
         :value="true"
         type="success">
         Please check your inbox and verify your email.
     </v-alert>
 
-    <v-alert v-else-if="status == 'error'"
+    <v-alert class="input-form" v-else-if="status == 'error'"
         :value="true"
         type="error">
         Oops. {{errormsg}}
     </v-alert>
 
-    <button v-on:click="signUp">Sign Up</button>
-    <span>or go back to <router-link to="/login">login</router-link>.</span>
+    <p align="center"> Already have an account? <router-link to="/login">Login</router-link> </p>
   </div>
 </template>
 
@@ -30,6 +69,7 @@
     name: 'signUp',
     data: function() {
       return {
+        show1: false,
         email: '',
         password: '',
         name: '',
@@ -89,9 +129,9 @@
   .signUp {
     margin-top: 40px;
   }
-  input {
-    margin: 10px 0;
-    width: 20%;
+  .input-form {
+    margin: 10px 665px;
+    width: 30%;
     padding: 15px;
   }
   button {

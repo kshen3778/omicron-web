@@ -1,16 +1,44 @@
 <template>
   <div class="login">
     <h3>Sign In</h3>
-    <input type="text" v-model="email" placeholder="Email" v-on:keyup.enter="signIn"><br>
-    <input type="password" v-model="password" placeholder="Password" v-on:keyup.enter="signIn"><br>
-    <v-alert v-if="status == 'error'"
-        :value="true"
-        type="error">
-        Oops. {{errormsg}}
-    </v-alert>
-    <button v-on:click="signIn">Login</button>
-    <p>You don't have an account ? You can <router-link to="/sign-up">create one</router-link></p>
-    <p>Forgot your password ? You can <router-link to="/forgot-password">reset it</router-link></p>
+
+    <v-form class="input-form"
+     ref="form"
+     lazy-validation>
+
+     <v-text-field
+       v-model="email"
+       label="E-mail"
+       v-on:keyup.enter="signIn"
+       required>
+     </v-text-field>
+
+     <v-text-field
+       v-model="password"
+       :append-icon="show1 ? 'visibility_off' : 'visibility'"
+       :type="show1 ? 'text' : 'password'"
+       @click:append="show1 = !show1"
+       v-on:keyup.enter="signIn"
+       label="Password"></v-text-field>
+     <router-link to="/forgot-password">Forgot your password?</router-link>
+
+     <p>Don't have an account? <router-link to="/sign-up">Create one now</router-link></p>
+
+
+     <v-btn
+       color="success"
+       v-on:click="signIn">
+       Sign In
+     </v-btn>
+
+     <v-alert v-if="status == 'error'"
+         :value="true"
+         type="error">
+         Oops. {{errormsg}}
+     </v-alert>
+
+    </v-form>
+
   </div>
 </template>
 
@@ -21,6 +49,7 @@
     name: 'login',
     data: function() {
       return {
+        show1: false,
         email: '',
         password: '',
         status: '',
@@ -62,9 +91,9 @@
   .login {
     margin-top: 40px;
   }
-  input {
-    margin: 10px 0;
-    width: 20%;
+  .input-form{
+    margin: 10px 665px;
+    width: 30%;
     padding: 15px;
   }
   button {
