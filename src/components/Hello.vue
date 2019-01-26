@@ -6,6 +6,7 @@
     <br>
 
     <div v-for="products in groupedProducts" class="row p-5">
+      <!--- Modify Design -->
       <div v-for="value in products" class="col-lg-4">
                 <v-card>
                   <img class="card-img-top" :src="value[1].imgurl">
