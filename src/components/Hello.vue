@@ -1,27 +1,28 @@
 <template>
   <div>
-  <h1>Dashboard</h1>
-
+    <h1>Dashboard</h1>
+    <h3>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h3>
     <br>
-    <br>
 
-    <div v-for="products in groupedProducts" class="row p-5">
-      <!--- Modify Design -->
-      <div v-for="value in products" class="col-lg-4">
-                <v-card>
-                  <img class="card-img-top" :src="value[1].imgurl">
-                  <v-card-title>
-                    <div>
-                      <h3>{{value[1].name}}</h3><br>
-                      <span>{{value[1].desc}}</span><br>
-                    </div>
-                  </v-card-title>
-                  <v-card-actions>
-                    <v-btn flat color="orange"><router-link :to="'/review/'+value[1].id">Send Feedback</router-link></v-btn>
-                  </v-card-actions>
-                </v-card>
-            <br>
-      </div>
+    <div v-for="products in groupedProducts" class="row p-5 item-row">
+
+        <div v-for="value in products" class="item-card">
+          <v-hover>
+                  <v-card style="cursor: pointer;" slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`" class="mx-auto" width="370" @click.native="gotoLink('/review/'+value[1].id)">
+                    <img class="card-img-top" :src="value[1].imgurl">
+                    <v-card-title class="justify-center">
+                      <div>
+                        <h3>{{value[1].name}}</h3>
+                        <h5 style="color: #737373;">{{value[1].desc}}</h5><br>
+                      </div>
+                    </v-card-title>
+
+                  </v-card>
+
+          </v-hover>
+              <br>
+        </div>
+
     </div>
 
   </div>
@@ -51,13 +52,17 @@ export default {
       });
 
       console.log(result);
-      var chunked = _.chunk(result, 3);
+      var chunked = _.chunk(result, 4);
       console.log(chunked);
       return chunked;
 
     }
   },
   methods: {
+
+    gotoLink: function(value){
+      this.$router.push(value);
+    },
 
     getImages: function (products) {
       console.log(products);
@@ -115,6 +120,16 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.item-row {
+    margin: 0 90px
+}
+
+.item-card {
+  margin: 0 10px;
+}
+
+
 h1, h2 {
   font-weight: normal;
 }
@@ -136,6 +151,7 @@ a {
 .card-img-top {
     width: 100%;
     height: 12vw;
+    padding: 40px 40px 40px 40px;
 
 }
 </style>
