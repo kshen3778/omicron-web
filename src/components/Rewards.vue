@@ -7,36 +7,36 @@
       <h3> You have <b> {{user_data.points}}</b> points remaining. </h3>
     </ul>
 
-    <div v-for="items in groupedItems" class="row p-5">
+    <div v-for="items in groupedItems" class="row p-5 item-row">
 
-        <div v-for="value in items" class="col-lg-4">
-
-              <div v-if="value" class="card mx-auto">
+        <div v-for="value in items" class="item-card">
+          <v-hover>
+              <v-card v-if="value" slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`" class="card mx-auto" width="490">
                 <img class="card-img-top" :src="value[1].imgurl">
                 <div class="card-body">
                   <h5 class="card-title">{{value[1].name}}</h5>
-                  <p class="card-text">{{value[1].desc}}</p>
                   <p class="card-text">Redeem for <b>{{value[1].cost}}</b> points.</p>
                   <p class="card-text">Amount Left: {{value[1].amount}}</p>
-                  <button type="button" class="btn btn-primary" v-b-modal="''+ value[0]">
-                    Details
-                  </button>
+                  <v-btn round color="orange" v-b-modal="''+ value[0]">
+                    Details & Redeem
+                  </v-btn>
 
                   <b-modal :id="''+value[0]" :title="value[1].name">
                     <p class="my-4">{{value[1].desc}}</p>
                     <p class="my-4">Redeem for <b>{{value[1].cost}}</b> points.</p>
                     <p class="my-4">Amount Left: {{value[1].amount}}</p>
                     <div slot="modal-footer">
-                      <button type="button" class="btn btn-primary" v-on:click="redeem(value[0])">Redeem</button>
+                      <v-btn round color="orange" v-on:click="redeem(value[0])">
+                        Redeem
+                      </v-btn>
                      </div>
                   </b-modal>
                 </div>
-              </div>
-
+              </v-card>
+           </v-hover>
         </div>
 
     </div>
-
 
 
   </div>
@@ -145,6 +145,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.item-row {
+    margin: 0 90px
+}
+
+.item-card {
+    margin: 0 10px;
+}
+
 h1, h2 {
   font-weight: normal;
 }
@@ -166,6 +175,6 @@ a {
 .card-img-top {
     width: 100%;
     height: 12vw;
-
+    padding: 40px 40px 40px 40px;
 }
 </style>
