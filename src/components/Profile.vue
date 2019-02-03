@@ -6,18 +6,21 @@
     <h2> Points: {{user_data.points}}</h2>
 
     <v-form
+    v-model="valid"
     class="input-form"
     ref="form"
     lazy-validation>
     <v-text-field
       v-model="user_data.name"
       label="Full Name"
+      :rules="rules"
       required>
     </v-text-field>
 
     <v-text-field
       v-model="user_data.address"
       label="Full Mailing Address"
+      :rules="rules"
       required>
     </v-text-field>
 
@@ -33,6 +36,7 @@
     <br>
 
     <v-btn
+      :disabled="!valid"
       color="success"
       v-on:click="editProfile(user_data.name, user_data.address)">
       Save
@@ -67,7 +71,11 @@ export default {
       nameMsg: '',
       addressMsg: '',
       updateMsg: '',
-      user_data: {}
+      user_data: {},
+      rules: [
+        v => !!v || 'Field is required',
+      ],
+      valid: true
     }
 
   },
