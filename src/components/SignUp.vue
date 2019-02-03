@@ -1,5 +1,6 @@
 <template>
   <div class="sign-up">
+    <br>
     <h3>Let's create a new account !</h3>
     <br>
 
@@ -126,11 +127,9 @@
 </script>
 
 <style scoped>
-  .signUp {
-    margin-top: 40px;
-  }
   .input-form {
-    margin: 10px 665px;
+    margin-left: auto;
+    margin-right: auto;
     width: 30%;
     padding: 15px;
   }

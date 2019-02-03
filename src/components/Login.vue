@@ -87,12 +87,13 @@
   }
 </script>
 
-<style scoped>  /* "scoped" attribute limit the CSS to this component only */
+<style scoped>
   .login {
     margin-top: 40px;
   }
   .input-form{
-    margin: 10px 665px;
+    margin-left: auto;
+    margin-right: auto;
     width: 30%;
     padding: 15px;
   }

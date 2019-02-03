@@ -1,41 +1,56 @@
 <template>
   <div class="profile">
     <h1> <b> Profile </b> </h1>
-    <h2> Full Name: {{user_data.name}} </h2>
-    <h2> User email: {{user_data.email}}</h2>
+    <h2> Name: {{user_data.name}} </h2>
+    <h2> Email: {{user_data.email}}</h2>
     <h2> Points: {{user_data.points}}</h2>
 
-    <b-card bg-variant="light">
+    <v-form
+    class="input-form"
+    ref="form"
+    lazy-validation>
+    <v-text-field
+      v-model="user_data.name"
+      label="Full Name"
+      required>
+    </v-text-field>
 
-        <b-form-group horizontal label="Edit Full Name:" label-class="text-sm-right">
-                <b-form-input v-model="user_data.name" type="text"></b-form-input>
-        </b-form-group>
+    <v-text-field
+      v-model="user_data.address"
+      label="Full Mailing Address"
+      required>
+    </v-text-field>
 
-        <b-form-group horizontal>
-                <button class="btn btn-primary" v-on:click="editName(user_data.name)">Save Name</button>
-        </b-form-group>
-
-        <h3>{{ nameMsg }}</h3>
-    </b-card>
-
-    <b-card bg-variant="light">
-
-        <b-form-group horizontal label="Edit Full Address:" label-class="text-sm-right">
-                <b-form-input v-model="user_data.address" type="text"></b-form-input>
-        </b-form-group>
-
-        <b-form-group horizontal>
-                <button class="btn btn-primary" v-on:click="editAddress(user_data.address)">Save Address</button>
-        </b-form-group>
-
-        <h3>{{ addressMsg }}</h3>
-    </b-card>
+    <v-alert
+      v-if="updateMsg != ''"
+      :value="true"
+      color="success"
+      icon="check_circle"
+      outline>
+      {{updateMsg}}
+    </v-alert>
 
     <br>
-    <br>
 
-    <button class="btn btn-primary" v-on:click="logout">Logout</button>
-    <button class="btn btn-primary" v-on:click="resetPassword()">Reset Password</button>
+    <v-btn
+      color="success"
+      v-on:click="editProfile(user_data.name, user_data.address)">
+      Save
+    </v-btn>
+
+
+    <v-btn
+      color="error"
+      v-on:click="logout()">
+      Logout
+    </v-btn>
+
+    <v-btn
+      color="warning"
+      v-on:click="resetPassword()">
+      Reset Password
+    </v-btn>
+  </v-form>
   </div>
 </template>
 
@@ -51,6 +66,7 @@ export default {
     return {
       nameMsg: '',
       addressMsg: '',
+      updateMsg: '',
       user_data: {}
     }
 
@@ -64,10 +80,18 @@ export default {
           obj.user_data = snapshot.val();
           console.log(obj.user_data);
       });
-
     },
 
-    editAddress: function(newAddress){
+    editProfile: function(newName, newAddress){
+      var userid = firebase.auth().currentUser.uid;
+      firebase.database().ref('users/' + userid).update({
+        name: newName,
+        address: newAddress
+      });
+      this.updateMsg = "Profile Information Updated!";
+    },
+
+    /*editAddress: function(newAddress){
       var userid = firebase.auth().currentUser.uid;
       firebase.database().ref('users/' + userid).update({
         address: newAddress
@@ -81,7 +105,7 @@ export default {
         name: newName
       });
       this.nameMsg = "Name Updated!";
-    },
+    },*/
 
     resetPassword: function(){
       var auth = firebase.auth();
@@ -108,6 +132,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.input-form{
+    /*margin: 10px 645px;*/
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding: 15px;
+}
+
 h1, h2 {
   font-weight: normal;
 }
