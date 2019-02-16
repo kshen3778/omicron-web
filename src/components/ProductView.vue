@@ -32,6 +32,11 @@
                           label-class="text-sm-right">
               <b-form-input v-model="product.imgurl"></b-form-input>
             </b-form-group>
+            <b-form-group horizontal
+                          label="Points value:"
+                          label-class="text-sm-right">
+              <b-form-input type="number" v-model="product.points"></b-form-input>
+            </b-form-group>
             <b-form-group horizontal>
               <button class="btn btn-primary" v-on:click="createProduct(product)">Create</button>
             </b-form-group>
@@ -60,6 +65,8 @@
                 {{value.id}}
                 <br>
                 {{value.imgurl}}
+                <br>
+                Points: {{value.points}}
                 <br>
                 Active: {{value.active}}
                 <br>
@@ -91,6 +98,11 @@
                                 label="Image Url:"
                                 label-class="text-sm-right">
                     <b-form-input v-model="value.imgurl"></b-form-input>
+                  </b-form-group>
+                  <b-form-group horizontal
+                                label="Points value:"
+                                label-class="text-sm-right">
+                    <b-form-input type="number" v-model="value.points"></b-form-input>
                   </b-form-group>
 
                   <div slot="modal-footer">
@@ -159,6 +171,7 @@ export default {
         link: product.link,
         id: product.id,
         imgurl: product.imgurl,
+        points: parseInt(product.points),
         active: true
       }).catch(function(error) {
           alert("Oops. " + err.message);
@@ -175,7 +188,8 @@ export default {
         desc: value.desc,
         link: value.link,
         id: value.id,
-        imgurl: value.imgurl
+        imgurl: value.imgurl,
+        points: parseInt(value.points)
       }).catch(function(error) {
           alert("Oops. " + err.message);
           console.log(error);

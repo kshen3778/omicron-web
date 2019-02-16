@@ -7,9 +7,8 @@
           <h2 class="card-text">{{product.desc}}</h2>
           <!--<h3><a :href="product.link" target="_blank" class="card-link">Submit Feedback</a></h3>-->
           <div v-if="allow_submission">
-            <div id="typeform" style="width: 100%; height: 300px;"></div>
+            <div id="typeform" style="width: 100%; height: 400px;"></div>
             <br>
-            <h2>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h2>
           </div>
 
           <div v-if="!allow_submission">
@@ -73,14 +72,11 @@ export default {
           opacity: 75,
           buttonText: "Take the survey!",
           onSubmit: function () {
-
+            console.log("ON SUBMIT CALLED");
             //TODO: once hidden elements are activated, query the first 10 and then search for one where the hidden userid matches current userid
 
             var link = productinfo.link.split("?")[0].split("/");
             var form_id = link[link.length - 1] //get the form id from product link
-
-            console.log(form_id);
-            console.log(productinfo.link + "?user_id="+userid);
 
             //get all responses for this form
             axios.get('https://api.typeform.com/forms/' + form_id + '/responses?page_size=10', {
@@ -103,7 +99,6 @@ export default {
                   if(response.data.items[i].hidden.user_id == userid){
                     var sub_id = response.data.items[i].response_id; //response id
                     var user_id = response.data.items[i].hidden.user_id;
-                    console.log("Found: " + sub_id + " , " + user_id);
                     found = true;
                     //Create Feedback requests
                     firebase.database().ref('feedback/' + sub_id).set({
@@ -125,15 +120,13 @@ export default {
                     });
 
                     //Add Points
+                    console.log("Points: " + productinfo.points);
                     firebase.database().ref('users/' + firebase.auth().currentUser.uid).update({
-                      points: obj.user_data.points + 100
+                      points: obj.user_data.points + parseInt(productinfo.points)
                     });
                   }
                 }
               }
-
-
-
 
 
             });

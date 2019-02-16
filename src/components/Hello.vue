@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Dashboard</h1>
-    <h3>Please allow up to 24-48 hours for points to be assigned after submitting feedback.</h3>
+    <h1>Dashboard</h1
     <br>
 
     <div v-for="products in groupedProducts" class="row p-5 item-row">
